@@ -1,0 +1,7 @@
+*.fasl
+*.cfasl
+*.dfsl
+*.o
+*.obj
+*~
+.DS_Store
