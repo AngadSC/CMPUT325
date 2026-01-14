@@ -12,5 +12,34 @@ in a nested list.
         ( + (count0 (car L)) (count0 (cdr L))))))
 
 ;test cases
-(print(count0 '(a 1 (b 2 ))))
-(print(count0 '(a 1 3 4 (3 a j (b 2)))))
+;(print(count0 '(a 1 (b 2 ))))
+;(print(count0 '(a 1 3 4 (3 a j (b 2)))))
+
+#| Question 2 
+The function returns a list that removes all duplicate elements
+3 functions, one to check if element exists in a list 
+one to remove duplicate and one that calls it
+|#
+;helper function: check if an element in a list 
+(defun is_equal (elem list)
+    (cond
+    ((null list) nil) 
+    (equal elem (car list)) t) 
+    (t ( is_equal elem (cdr list))))
+
+;removes the duplicates
+(defun rm_dup_helper (x seen)
+    (cond 
+    ((null x) nil) 
+    ((is_equal (car x) seen)
+    (rm_dup_helper (cdr x) seen))
+    (t ( cons ( car x)
+    (rm_dup_helper (cdr x)
+            (cons(car x) seen))))))
+
+
+;main function
+(defun rm-duplicate (x)
+(rm_dup_helper x nil)) 
+
+
