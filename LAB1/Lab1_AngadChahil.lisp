@@ -7,8 +7,8 @@ in a nested list.
     0
     (if (atom( car L))
         (if (numberp (car L))
-            (+0 (count0 (cdr L)))
-            ( +1 (count0 (cdr L))))
+            (+ 0 (count0 (cdr L)))
+            ( + 1 (count0 (cdr L))))
         ( + (count0 (car L)) (count0 (cdr L))))))
 
 ;test cases
