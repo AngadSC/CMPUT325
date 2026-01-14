@@ -12,5 +12,5 @@ in a nested list.
         ( + (count0 (car L)) (count0 (cdr L))))))
 
 ;test cases
-(count0 '(a 1 (b 2 )))
-(count0 '(a 1 3 4 (3 a j (b 2))))
+(print(count0 '(a 1 (b 2 ))))
+(print(count0 '(a 1 3 4 (3 a j (b 2)))))
