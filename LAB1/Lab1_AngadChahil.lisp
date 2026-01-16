@@ -47,6 +47,6 @@ one to remove duplicate and one that calls it
 ;test cases
 (print (rm-duplicate '( a b c)))
 (print (rm-duplicate '(a b a c )))
-(print (rm-duplocate '(1 2 3 2 1)))
+(print (rm-duplicate '(1 2 3 2 1)))
 (print (rm-duplicate '((1 2 ) (3 4) (1 2))))
 (print (rm-duplicate'()))
