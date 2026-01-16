@@ -24,8 +24,8 @@ one to remove duplicate and one that calls it
 (defun is_equal (elem list)
     (cond
     ((null list) nil) 
-    (equal elem (car list)) t) 
-    (t ( is_equal elem (cdr list))))
+    ((equal elem (car list)) t) 
+    (t ( is_equal elem (cdr list)))))
 
 ;removes the duplicates
 (defun rm_dup_helper (x seen)
@@ -45,8 +45,8 @@ one to remove duplicate and one that calls it
 
 
 ;test cases
-print(rm-duplicate '( a b c))
-print(rm-duplicate '(a b a c ))
-print(rm-duplocate '(1 2 3 2 1))
-print(rm-duplicate '((1 2 ) (3 4) (1 2)))
-print(rm-duplicate'())
+(print (rm-duplicate '( a b c)))
+(print (rm-duplicate '(a b a c )))
+(print (rm-duplocate '(1 2 3 2 1)))
+(print (rm-duplicate '((1 2 ) (3 4) (1 2))))
+(print (rm-duplicate'()))
