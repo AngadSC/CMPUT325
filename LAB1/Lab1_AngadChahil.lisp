@@ -43,3 +43,10 @@ one to remove duplicate and one that calls it
 (rm_dup_helper x nil)) 
 
 
+
+;test cases
+(rm-duplicate '( a b c))
+(rm-duplicate '(a b a c ))
+(rm-duplocate '(1 2 3 2 1))
+(rm-duplicate '((1 2 ) (3 4) (1 2)))
+(rm-duplicate'())
