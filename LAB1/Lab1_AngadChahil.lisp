@@ -50,3 +50,14 @@ one to remove duplicate and one that calls it
 (print (rm-duplicate '(1 2 3 2 1)))
 (print (rm-duplicate '((1 2 ) (3 4) (1 2))))
 (print (rm-duplicate'()))
+
+
+#| Question 3 part a , alternates between list L1 and L2, returning a list that has all the items 
+|#
+
+(defun mix (L1 L2)
+    cond 
+        ((null L1) L2)
+        (( null L2) L1)
+        (t (cons (car L1)
+                (mix L2 (cdr L1)))))
