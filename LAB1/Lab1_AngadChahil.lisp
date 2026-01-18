@@ -61,3 +61,16 @@ one to remove duplicate and one that calls it
         (( null L2) L1)
         (t (cons (car L1)
                 (mix L2 (cdr L1)))))
+
+
+#| Question 3 part b, returns two lists, one with all odd element positons 
+one with even element positions
+|#
+
+(defun split (L) 
+    (cond 
+        ((null L) '(() ()))
+        ((null ( cdr L)) ( list ( list ( car L)) '()))
+        (t (let ((rest (split (cddr L))))
+            (list (cons (car L) (car rest))
+                (cons (cadr L) (cadr rest)))))))
