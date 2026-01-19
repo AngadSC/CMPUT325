@@ -74,3 +74,10 @@ one with even element positions
         (t (let ((rest (split (cddr L))))
             (list (cons (car L) (car rest))
                 (cons (cadr L) (cadr rest)))))))
+
+
+
+
+
+#| Question 4 , non accumalator solution retrunign subsets of size S, inputting a list L 
+|#
