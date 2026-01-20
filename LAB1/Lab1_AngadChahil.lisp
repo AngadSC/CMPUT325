@@ -80,4 +80,27 @@ one with even element positions
 
 
 #| Question 4 , non accumalator solution retrunign subsets of size S, inputting a list L 
+Build the result after recursion is completed 
 |#
+(defun subsets0 (L S)
+    (cond 
+        ((equal S 0) '(()))     ; if S is 0, only subset is empty list
+        ((null L ) '(())        ; if List is emtpy 
+        
+
+        (t
+            (let* ((first-elem (car L))     ;gets first elem 
+                    (rest-list) (cdr L))     ; rest of list 
+                    (rest-subset (subsets0 rest-list S)))   ;gets the subsets with first elem missing 
+                    (append rest-subset 
+                    (add-to-sub first-elem rest-subset(- S 1)))))))     ; takes subsets that dont have first elem, and add first elem 
+(defun add-to-sub (elem subsets max-size)
+(cond 
+    ((null subsets) nil)
+    ((> (length ( car subsets)) maz-size)
+        (add-to-sub elem (cdr subsets) max-size))
+        
+        (t 
+        (cons (cons elem (car subsets))
+                (add-to-sub elem (cdr subsets) max-size)))))
+
