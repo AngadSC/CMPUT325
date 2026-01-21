@@ -177,10 +177,10 @@ Test cases for substitute-exp:
         ((equal (car L) E1)     ; is first elem =E1 
             (cons E2 (substitute-exp E1 E2 (cdr L))))   ; replace with E2
         ((atom (car L))                                 ; first elem not E1
-            (cons (car L) (substitute-exp E1 E2 (cdr L)))  ; leave it in place 
+            (cons (car L) (substitute-exp E1 E2 (cdr L))))  ; leave it in place 
             (t 
                 (cons (substitute-exp E1 E2 (car L))        ; recurisng into lis t
-                    (substitute-exp E1 E2 (cdr L)))))))
+                    (substitute-exp E1 E2 (cdr L))))))
 
 
 (print "========================================")
