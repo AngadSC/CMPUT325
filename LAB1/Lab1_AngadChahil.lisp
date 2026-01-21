@@ -117,10 +117,10 @@ Test cases for subsets0:
     (sort (subsets0-helper L S) 
           (lambda (a b) (< (length a) (length b)))))
 
-(defun subset0-helper (L S)
+(defun subsets0-helper (L S)
     (cond 
         ((null L) '(()))
-        (t ( let* ((rest-subset (subset0-helper (cdr L) S)))
+        (t ( let* ((rest-subset (subsets0-helper (cdr L) S)))
             (append rest-subset
                 (add-to-sub (car L) rest-subset S))))))
 
