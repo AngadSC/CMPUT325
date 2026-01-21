@@ -116,11 +116,11 @@ Test cases for subsets0:
         ((null L ) '(())))      ; if List is emtpy 
         
 
-        (t (let* ((first-elem (car L))     ;gets first elem 
-                    (rest-list) (cdr L))     ; rest of list 
-                    (rest-subset (subsets0 rest-list S)))   ;gets the subsets with first elem missing 
+           (t (let* ((first-elem (car L))  ;gets first elem 
+                        (rest-list (cdr L))      ; rest of list 
+                        (rest-subset (subsets0 rest-list S)))   ;gets the subsets with first elem missing 
                     (append rest-subset 
-                    (add-to-sub first-elem rest-subset(- S 1)))))     ; takes subsets that dont have first elem, and add first elem 
+                         (add-to-sub first-elem rest-subset(- S 1))))))     ; takes subsets that dont have first elem, and add first elem 
 (defun add-to-sub (elem subsets max-size)
 (cond 
     ((null subsets) nil)
