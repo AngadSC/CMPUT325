@@ -64,11 +64,11 @@ Test cases for mix:
 |#
 
 (defun mix (L1 L2)
-    cond 
+    (cond 
         ((null L1) L2)
         (( null L2) L1)
         (t (cons (car L1)
-                (mix L2 (cdr L1)))))
+                (mix L2 (cdr L1))))))
 
 
 #| Question 3 part b, returns two lists, one with all odd element positons 
@@ -113,19 +113,18 @@ Test cases for subsets0:
 (defun subsets0 (L S)
     (cond 
         ((equal S 0) '(()))     ; if S is 0, only subset is empty list
-        ((null L ) '(())        ; if List is emtpy 
+        ((null L ) '(())))      ; if List is emtpy 
         
 
-        (t
-            (let* ((first-elem (car L))     ;gets first elem 
+        (t (let* ((first-elem (car L))     ;gets first elem 
                     (rest-list) (cdr L))     ; rest of list 
                     (rest-subset (subsets0 rest-list S)))   ;gets the subsets with first elem missing 
                     (append rest-subset 
-                    (add-to-sub first-elem rest-subset(- S 1)))))))     ; takes subsets that dont have first elem, and add first elem 
+                    (add-to-sub first-elem rest-subset(- S 1)))))     ; takes subsets that dont have first elem, and add first elem 
 (defun add-to-sub (elem subsets max-size)
 (cond 
     ((null subsets) nil)
-    ((> (length ( car subsets)) maz-size)
+    ((> (length ( car subsets)) max-size)
         (add-to-sub elem (cdr subsets) max-size))
         
         (t 
@@ -146,18 +145,18 @@ Test cases for subsets (with accumulator):
 |#
 
 (defun subsets (L S)
-    (subset-help L S '() '(())))    `   ; empty set for acumulation 
+    (subset-help L S '() '(())))       ; empty set for acumulation 
 
 (defun subset-help (L S current accumulate )
     (cond 
         ((null L) accumulate) 
-        (t ( let((first(uf ( < (length current) S)
+        (t ( let ((first(if ( < (length current) S)
                 (cons (car L) current)
                 nil)))
                 (subset-help (cdr L) S current
                 (if first
-                (subset-help (cdr L) S first acc)
-                acc))))))
+                (subset-help (cdr L) S first accumulate)
+                accumulate))))))
 
 
 
