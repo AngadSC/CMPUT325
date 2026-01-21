@@ -158,133 +158,60 @@ Test cases for subsets (with accumulator):
                     (subset-helper (cdr L) S (cons (car L) current)))
                     without-first)))))
 
-(print "========================================")
-(print "TESTING MIX")
-(print "========================================")
-(print "(mix '(a c e) '(b d f))")
-(print (mix '(a c e) '(b d f)))
-(print "Expected: (A B C D E F)")
-(print "")
 
-(print "(mix '(a c e f) '(b d))")
-(print (mix '(a c e f) '(b d)))
-(print "Expected: (A B C D E F)")
-(print "")
 
-(print "(mix '(a c) '(b d e f))")
-(print (mix '(a c) '(b d e f)))
-(print "Expected: (A B C D E F)")
-(print "")
+#| Question 5, replace E1 in List L with E2, go through each element recursively replacing if E1 
+|#
+#|
+Test cases for substitute-exp:
+(substitute-exp 'a 'x '(a b c a)) => (x b c x)
+(substitute-exp 'a 'x '(a (b a) c)) => (x (b x) c)
+(substitute-exp '(1 2) '(x y) '((1 2) 3 (1 2))) => ((x y) 3 (x y))
+(substitute-exp 'old 'new '()) => ()
+(substitute-exp 'a 'b '(c d e)) => (c d e)
+(substitute-exp 1 99 '(1 (2 1) (3 (1 4)))) => (99 (2 99) (3 (99 4)))
+|#
+(defun substitute-exp (E1 E2 L)
+    (cond 
+        ((null L) '())          ; base case empty list 
+        ((equal (car L) E1)     ; is first elem =E1 
+            (cons E2 (substitute-exp E1 E2 (cdr L))))   ; replace with E2
+        ((atom (car L))                                 ; first elem not E1
+            (cons (car L) (substitute-exp E1 E2 (cdr L)))  ; leave it in place 
+            (t 
+                (cons (substitute-exp E1 E2 (car L))        ; recurisng into lis t
+                    (substitute-exp E1 E2 (cdr L)))))))
 
-(print "(mix '() '(1 2 3))")
-(print (mix '() '(1 2 3)))
-(print "Expected: (1 2 3)")
-(print "")
-
-(print "(mix '(x y z) '())")
-(print (mix '(x y z) '()))
-(print "Expected: (X Y Z)")
-(print "")
 
 (print "========================================")
-(print "TESTING SPLIT")
+(print "TESTING SUBSTITUTE-EXP")
 (print "========================================")
-(print "(split '(a b c d e f))")
-(print (split '(a b c d e f)))
-(print "Expected: ((A C E) (B D F))")
+(print "(substitute-exp 'a 'x '(a b c a))")
+(print (substitute-exp 'a 'x '(a b c a)))
+(print "Expected: (X B C X)")
 (print "")
 
-(print "(split '(1 2 3 4 5))")
-(print (split '(1 2 3 4 5)))
-(print "Expected: ((1 3 5) (2 4))")
+(print "(substitute-exp 'a 'x '(a (b a) c))")
+(print (substitute-exp 'a 'x '(a (b a) c)))
+(print "Expected: (X (B X) C)")
 (print "")
 
-(print "(split '(x y))")
-(print (split '(x y)))
-(print "Expected: ((X) (Y))")
+(print "(substitute-exp '(1 2) '(x y) '((1 2) 3 (1 2)))")
+(print (substitute-exp '(1 2) '(x y) '((1 2) 3 (1 2))))
+(print "Expected: ((X Y) 3 (X Y))")
 (print "")
 
-(print "(split '(z))")
-(print (split '(z)))
-(print "Expected: ((Z) NIL)")
+(print "(substitute-exp 'old 'new '())")
+(print (substitute-exp 'old 'new '()))
+(print "Expected: NIL")
 (print "")
 
-(print "(split '())")
-(print (split '()))
-(print "Expected: (NIL NIL)")
+(print "(substitute-exp 'a 'b '(c d e))")
+(print (substitute-exp 'a 'b '(c d e)))
+(print "Expected: (C D E)")
 (print "")
 
-(print "(split '(a b c d))")
-(print (split '(a b c d)))
-(print "Expected: ((A C) (B D))")
+(print "(substitute-exp 1 99 '(1 (2 1) (3 (1 4))))")
+(print (substitute-exp 1 99 '(1 (2 1) (3 (1 4)))))
+(print "Expected: (99 (2 99) (3 (99 4)))")
 (print "")
-
-(print "========================================")
-(print "TESTING SUBSETS0 (without accumulator)")
-(print "========================================")
-(print "(subsets0 '(a b c) 2)")
-(print (subsets0 '(a b c) 2))
-(print "Expected: (NIL (A) (B) (C) (A B) (A C) (B C))")
-(print "")
-
-(print "(subsets0 '(a b c) 1)")
-(print (subsets0 '(a b c) 1))
-(print "Expected: (NIL (A) (B) (C))")
-(print "")
-
-(print "(subsets0 '(1 2) 1)")
-(print (subsets0 '(1 2) 1))
-(print "Expected: (NIL (1) (2))")
-(print "")
-
-(print "(subsets0 '(x) 0)")
-(print (subsets0 '(x) 0))
-(print "Expected: (NIL)")
-(print "")
-
-(print "(subsets0 '(a b c) 3)")
-(print (subsets0 '(a b c) 3))
-(print "Expected: (NIL (A) (B) (C) (A B) (A C) (B C) (A B C))")
-(print "")
-
-(print "(subsets0 '() 5)")
-(print (subsets0 '() 5))
-(print "Expected: (NIL)")
-(print "")
-
-(print "========================================")
-(print "TESTING SUBSETS (with accumulator)")
-(print "========================================")
-(print "(subsets '(a b c) 2)")
-(print (subsets '(a b c) 2))
-(print "Expected: (NIL (C) (B) (B C) (A) (A C) (A B))")
-(print "")
-
-(print "(subsets '(a b c) 1)")
-(print (subsets '(a b c) 1))
-(print "Expected: (NIL (C) (B) (A))")
-(print "")
-
-(print "(subsets '(1 2) 1)")
-(print (subsets '(1 2) 1))
-(print "Expected: (NIL (2) (1))")
-(print "")
-
-(print "(subsets '(x) 0)")
-(print (subsets '(x) 0))
-(print "Expected: (NIL)")
-(print "")
-
-(print "(subsets '(a b c) 3)")
-(print (subsets '(a b c) 3))
-(print "Expected: (NIL (C) (B) (B C) (A) (A C) (A B) (A B C))")
-(print "")
-
-(print "(subsets '() 5)")
-(print (subsets '() 5))
-(print "Expected: (NIL)")
-(print "")
-
-(print "========================================")
-(print "ALL TESTS COMPLETE")
-(print "========================================")
