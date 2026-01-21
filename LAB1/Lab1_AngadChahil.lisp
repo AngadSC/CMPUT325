@@ -212,11 +212,11 @@ Test cases for xdelete:
 (defun right_subtree (Tr)
     (car (cdr (cdr Tr))))
 
-(defun find)_max (Tr)
+(defun find_max (Tr)
     (cond 
         ((isEmptyTree Tr) nil)
         ((isEmptyTree (right_subtree Tr)) (node_value Tr))
-        (t (find_max (right_subtree Tr))))
+        (t (find_max (right_subtree Tr)))))
 
 (defun delete_max (Tr)
     (cond 
@@ -229,15 +229,15 @@ Test cases for xdelete:
 (defun xdelete (Tr int)
     (cond 
         ((isEmptyTree Tr) nil)
-        ((< Int (node_value Tr))
-            (create_tree (xdelete (left_subtree Tr) Int)
+        ((< int (node_value Tr))
+            (create_tree (xdelete (left_subtree Tr) int)
                 (node_value Tr)
                     (right_subtree Tr)))
             
-            ((> Int (node_value Tr))
+            ((> int (node_value Tr))
                 (create_tree (left_subtree Tr)
                     (node_value Tr)
-                    (xdelete (right_subtree Tr) Int)))
+                    (xdelete (right_subtree Tr) int)))
             
             ( t
                 (cond
