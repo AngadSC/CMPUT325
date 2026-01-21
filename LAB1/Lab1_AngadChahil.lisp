@@ -112,25 +112,26 @@ Test cases for subsets0:
 
   
 
+
 (defun subsets0 (L S)
+    (sort (subsets0-helper L S) 
+          (lambda (a b) (< (length a) (length b)))))
+
+(defun subset0-helper (L S)
     (cond 
-        ((null L) '(()))         ; list is emtpy 
-        (t (let* ((first-elem (car L))       ;gets first elem 
-                  (rest-list (cdr L))        ; rest of list 
-                  (rest-subset (subsets0 rest-list S)))         ;;gets the subsets with first elem missing 
-                (append rest-subset 
-                    (add-to-sub first-elem rest-subset (- S 1)))))))        ;; takes subsets that dont have first elem, and add first elem 
+        ((null L) '(()))
+        (t ( let* ((rest-subset (subset0-helper (cdr L) S)))
+            (append rest-subset
+                (add-to-sub (car L) rest-subset S))))))
 
 (defun add-to-sub (elem subsets max-size)
-(cond 
-    ((null subsets) nil)
-    ((> (length ( car subsets)) max-size)
-        (add-to-sub elem (cdr subsets) max-size))
-        
-        (t 
-        (cons (cons elem (car subsets))
-                (add-to-sub elem (cdr subsets) max-size)))))
-
+    (cond 
+        ((null subsets) nil )
+        ((> (length (cons elem (car subsets))) max-size)
+            (add-to-sub elem (cdr subsets) max-size))
+            (t
+                (cons (cons elem (car subsets))
+                    (add-to-sub elem (cdr subsets) max-size)))))
 
 #| Question 4 with an accumulator 
 |#
@@ -145,20 +146,17 @@ Test cases for subsets (with accumulator):
 |#
 
 (defun subsets (L S)
-    (subset-help L S '() '(())))       ; empty set for acumulation 
+    (sort (subset-helper L S '())
+        (lambda ( a b) (< (length a) (length b)))))
 
-(defun subset-help (L S current accumulate )
-    (cond 
-        ((null L) accumulate) 
-        (t ( let ((first(if ( < (length current) S)
-                (cons (car L) current)
-                nil)))
-                (subset-help (cdr L) S current
-                (if first
-                (subset-help (cdr L) S first accumulate)
-                accumulate))))))
-
-
+(defun subset-helper (L S current)
+    (cond   
+        ((null L) (list current))
+        (t (let ((without-first (subset-helper (cdr L) S current)))
+            (if (< (length current) S)
+                (append without-first
+                    (subset-helper (cdr L) S (cons (car L) current)))
+                    without-first)))))
 
 (print "========================================")
 (print "TESTING MIX")
