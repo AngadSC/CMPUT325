@@ -220,8 +220,8 @@ Test cases for xdelete:
 
 (defun delete_max (Tr)
     (cond 
-        ((IsEmptyTree Tr) nil)
-        ((IsEmptyTree (right_subtree Tr)) (left_subtree Tr))
+        ((isEmptyTree Tr) nil)
+        ((isEmptyTree (right_subtree Tr)) (left_subtree Tr))
         (t (create_tree (left_subtree Tr)
             (node_value Tr)
             (delete_max (right_subtree Tr))))))
