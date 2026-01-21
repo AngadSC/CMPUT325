@@ -183,35 +183,103 @@ Test cases for substitute-exp:
                     (substitute-exp E1 E2 (cdr L))))))
 
 
+#| Question 6, xdelete function, and helper functions from lecture notes
+|#
+#|
+Test cases for xdelete:
+(xdelete nil 5) => NIL
+(xdelete '(nil 5 nil) 5) => NIL
+(xdelete '(nil 5 nil) 3) => (NIL 5 NIL)
+(xdelete '((nil 2 nil) 4 (nil 6 nil)) 2) => (NIL 4 (NIL 6 NIL))
+(xdelete '((nil 2 nil) 4 ((nil 5 nil) 6 (nil 8 nil))) 4) => ((NIL 2 NIL) 2 ((NIL 5 NIL) 6 (NIL 8 NIL))) 
+|#
+
+(defun isEmptyTree (Tr)
+    (null Tr))
+
+(defun create_empty_tree ()
+    nil)
+
+(defun create_tree ( L N R)
+    (cons L (cons N (cons R nil))))
+
+(defun node_value (Tr)
+    (car (cdr Tr)))
+
+(defun left_subtree (Tr)
+    (car Tr))
+
+(defun right_subtree (Tr)
+    (car (cdr (cdr Tr))))
+
+(defun find)_max (Tr)
+    (cond 
+        ((isEmptyTree Tr) nil)
+        ((isEmptyTree (right_subtree Tr)) (node_value Tr))
+        (t (find_max (right_subtree Tr))))
+
+(defun delete_max (Tr)
+    (cond 
+        ((IsEmptyTree Tr) nil)
+        ((IsEmptyTree (right_subtree Tr)) (left_subtree Tr))
+        (t (create_tree (left_subtree Tr)
+            (node_value Tr)
+            (delete_max (right_subtree Tr))))))
+
+(defun xdelete (Tr int)
+    (cond 
+        ((isEmptyTree Tr) nil)
+        ((< Int (node_value Tr))
+            (create_tree (xdelete (left_subtree Tr) Int)
+                (node_value Tr)
+                    (right_subtree Tr)))
+            
+            ((> Int (node_value Tr))
+                (create_tree (left_subtree Tr)
+                    (node_value Tr)
+                    (xdelete (right_subtree Tr) Int)))
+            
+            ( t
+                (cond
+                    ((and (isEmptyTree (left_subtree Tr))
+                        (isEmptyTree (right_subtree Tr)))
+                        nil)
+                        
+                    ((isEmptyTree (left_subtree Tr))
+                        (right_subtree Tr))
+                    ((isEmptyTree (right_subtree Tr))
+                        (left_subtree Tr))
+                        (t
+                            (let ((max_left (find_max (left_subtree Tr))))
+                                (create_tree (delete_max (left_subtree Tr))
+                                    max_left
+                                    (right_subtree Tr))))))))
+
+
 (print "========================================")
-(print "TESTING SUBSTITUTE-EXP")
+(print "TESTING XDELETE")
 (print "========================================")
-(print "(substitute-exp 'a 'x '(a b c a))")
-(print (substitute-exp 'a 'x '(a b c a)))
-(print "Expected: (X B C X)")
-(print "")
-
-(print "(substitute-exp 'a 'x '(a (b a) c))")
-(print (substitute-exp 'a 'x '(a (b a) c)))
-(print "Expected: (X (B X) C)")
-(print "")
-
-(print "(substitute-exp '(1 2) '(x y) '((1 2) 3 (1 2)))")
-(print (substitute-exp '(1 2) '(x y) '((1 2) 3 (1 2))))
-(print "Expected: ((X Y) 3 (X Y))")
-(print "")
-
-(print "(substitute-exp 'old 'new '())")
-(print (substitute-exp 'old 'new '()))
+(print "(xdelete nil 5)")
+(print (xdelete nil 5))
 (print "Expected: NIL")
 (print "")
 
-(print "(substitute-exp 'a 'b '(c d e))")
-(print (substitute-exp 'a 'b '(c d e)))
-(print "Expected: (C D E)")
+(print "(xdelete '(nil 5 nil) 5)")
+(print (xdelete '(nil 5 nil) 5))
+(print "Expected: NIL")
 (print "")
 
-(print "(substitute-exp 1 99 '(1 (2 1) (3 (1 4))))")
-(print (substitute-exp 1 99 '(1 (2 1) (3 (1 4)))))
-(print "Expected: (99 (2 99) (3 (99 4)))")
+(print "(xdelete '(nil 5 nil) 3)")
+(print (xdelete '(nil 5 nil) 3))
+(print "Expected: (NIL 5 NIL)")
+(print "")
+
+(print "(xdelete '((nil 2 nil) 4 (nil 6 nil)) 2)")
+(print (xdelete '((nil 2 nil) 4 (nil 6 nil)) 2))
+(print "Expected: (NIL 4 (NIL 6 NIL))")
+(print "")
+
+(print "(xdelete '((nil 2 nil) 4 (nil 6 nil)) 4)")
+(print (xdelete '((nil 2 nil) 4 (nil 6 nil)) 4))
+(print "Expected: ((NIL 2 NIL) 2 (NIL 6 NIL)) or similar")
 (print "")
