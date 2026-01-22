@@ -256,30 +256,96 @@ Test cases for xdelete:
                                     (right_subtree Tr))))))))
 
 
-(print "========================================")
-(print "TESTING XDELETE")
-(print "========================================")
-(print "(xdelete nil 5)")
-(print (xdelete nil 5))
-(print "Expected: NIL")
-(print "")
 
-(print "(xdelete '(nil 5 nil) 5)")
-(print (xdelete '(nil 5 nil) 5))
-(print "Expected: NIL")
-(print "")
 
-(print "(xdelete '(nil 5 nil) 3)")
-(print (xdelete '(nil 5 nil) 3))
-(print "Expected: (NIL 5 NIL)")
-(print "")
+#| Question 7 (A,B) page A links to B, given list of pairs, search through list
+to find the pages, retrun list of pages that can be reacehed by X
+SO find all pairs that are X,Y - > and return a list of the Ys. 
+|#
 
-(print "(xdelete '((nil 2 nil) 4 (nil 6 nil)) 2)")
-(print (xdelete '((nil 2 nil) 4 (nil 6 nil)) 2))
-(print "Expected: (NIL 4 (NIL 6 NIL))")
-(print "")
+(defun reached (x L)
+    (remove-duplicates (reached-help (list x) L '())))
 
-(print "(xdelete '((nil 2 nil) 4 (nil 6 nil)) 4)")
-(print (xdelete '((nil 2 nil) 4 (nil 6 nil)) 4))
-(print "Expected: ((NIL 2 NIL) 2 (NIL 6 NIL)) or similar")
-(print "")
+; helper functin that uses accumulator for the pages that have been visited
+(defun reached-help (to-visit L visited)
+    (cond 
+        ((null to-visit) visited) 
+        (t 
+            (let ((curent (car to-visit)))
+                (if (member current visited)
+                (reached-help
+                    (append (cdr to-visit) (find-neighbours current L))
+                    L  
+                    (cons current visited)))))))
+
+; find all pages that the page we are on connect to 
+(defun find-neighbours (page L)
+    (cond 
+        ((null L) '())
+        ((equal (car ( car L)) page)
+            (cons (cadr (car L)) (find-neighbours page (cdr L))))
+        (t (find-neighbours page(cdr L)))))
+
+; check if is-member
+(defun is-member (item L)
+    (cond   
+    ((null L) nil)
+    ((equal item (car L)) t)
+    (t (is-member item (cdr L)))))
+
+;remove duplicates 
+(defun remove-duplicates (L)
+    (cond   
+    ((null L) '())
+    ((is-member (car L) (cdr L)) (remove-duplicates (cdr L)))
+    (t (cons (car L) (remove-duplicates (cdr L))))))
+
+(defun rank (S L)
+    (let ((counts (count-ref S L)))
+        (extract-page (my-sort counts))))
+
+;count refs for each page 
+(defun count-ref (S L)
+    (cond 
+        ((null S) '())
+        (t (cons (list (car S) (count-ref-to (car S) L))
+        (count-ref (cdr S) L)))))
+
+;count the number of page refences to a target page 
+(defun count-ref-to (target-page L)
+    (list-length (remove-duplicates
+    (filter-ref target-page L))))
+
+(defun list-length (L)
+    (cond 
+    ((null L) 0)
+    (t (+ 1 (list-length (cdr L))))))
+
+;list of pages that refernce te page we want 
+(defun filter-ref (target-page L)
+    (cond 
+        ((null L) '())
+        ((and (equal (cadr (car L)) target-page)
+            (not (equal (car ( car L)) target-page)))
+            (cons (car (car L)) (filter-ref target-page (cdr L))))
+            (t (filter-ref target-page (cdr L)))))
+
+(defun extract-pages (L)
+    (cond 
+        ((null L) '())
+        (t (cons (car (car L))  (extract-pages (cdr L))))))
+
+#| Sorting function uses a simple insertion sort 
+|#
+(defun my-sort (L)
+    (cond 
+    ((null L) '())
+    (t (inset-sorted (car L) (my-sort (cdr L))))))
+
+(defun insert-sorted (elem sorted-list) 
+    (cond 
+        ((null sorted-list) (list elem))
+        ((> (cadr elem) (cadr (car sorted-list)))
+            (cons elem sorted-list))
+            (t (cons (car sorted-list) (insert-sorted elem (cdr sorted-list))))))
+
