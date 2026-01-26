@@ -271,9 +271,11 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
     (cond 
         ((null to-visit) visited) 
         (t 
-            (let ((curent (car to-visit)))
-                (if (member current visited)
+            (let ((current (car to-visit)))
+                (if (is-member current visited)
+                (reached-help (cdr to-visit) L visited)
                 (reached-help
+                
                     (append (cdr to-visit) (find-neighbours current L))
                     L  
                     (cons current visited)))))))
@@ -330,17 +332,17 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
             (cons (car (car L)) (filter-ref target-page (cdr L))))
             (t (filter-ref target-page (cdr L)))))
 
-(defun extract-pages (L)
+(defun extract-page (L)
     (cond 
         ((null L) '())
-        (t (cons (car (car L))  (extract-pages (cdr L))))))
+        (t (cons (car (car L))  (extract-page (cdr L))))))
 
 #| Sorting function uses a simple insertion sort 
 |#
 (defun my-sort (L)
     (cond 
     ((null L) '())
-    (t (inset-sorted (car L) (my-sort (cdr L))))))
+    (t (insert-sorted (car L) (my-sort (cdr L))))))
 
 (defun insert-sorted (elem sorted-list) 
     (cond 
