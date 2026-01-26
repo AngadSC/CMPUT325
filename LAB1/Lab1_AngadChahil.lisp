@@ -296,11 +296,11 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
     (t (is-member item (cdr L)))))
 
 ;remove duplicates 
-(defun remove-duplicates (L)
+(defun remove-dups (L)
     (cond   
     ((null L) '())
-    ((is-member (car L) (cdr L)) (remove-duplicates (cdr L)))
-    (t (cons (car L) (remove-duplicates (cdr L))))))
+    ((is-member (car L) (cdr L)) (remove-dups (cdr L)))
+    (t (cons (car L) (remove-dups (cdr L))))))
 
 (defun rank (S L)
     (let ((counts (count-ref S L)))
@@ -315,7 +315,7 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
 
 ;count the number of page refences to a target page 
 (defun count-ref-to (target-page L)
-    (list-length (remove-duplicates
+    (list-length (remove-dups
     (filter-ref target-page L))))
 
 (defun list-length (L)
