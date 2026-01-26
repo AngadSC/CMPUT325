@@ -264,7 +264,7 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
 |#
 
 (defun reached (x L)
-    (remove-duplicates (reached-help (list x) L '())))
+    (remove-dups (reached-help (list x) L '())))
 
 ; helper functin that uses accumulator for the pages that have been visited
 (defun reached-help (to-visit L visited)
@@ -315,13 +315,13 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
 
 ;count the number of page refences to a target page 
 (defun count-ref-to (target-page L)
-    (list-length (remove-dups
+    (my-length (remove-dups
     (filter-ref target-page L))))
 
-(defun list-length (L)
+(defun my-length (L)
     (cond 
     ((null L) 0)
-    (t (+ 1 (list-length (cdr L))))))
+    (t (+ 1 (my-length (cdr L))))))
 
 ;list of pages that refernce te page we want 
 (defun filter-ref (target-page L)
