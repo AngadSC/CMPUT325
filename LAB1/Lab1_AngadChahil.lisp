@@ -264,7 +264,7 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
 |#
 
 (defun reached (x L)
-    (remove-dups (reached-help (list x) L '())))
+    (remove-dup (reached-help (list x) L '())))
 
 ; helper functin that uses accumulator for the pages that have been visited
 (defun reached-help (to-visit L visited)
@@ -347,7 +347,7 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
 (defun insert-sorted (elem sorted-list) 
     (cond 
         ((null sorted-list) (list elem))
-        ((> (cadr elem) (cadr (car sorted-list)))
+        ((< (cadr elem) (cadr (car sorted-list)))
             (cons elem sorted-list))
             (t (cons (car sorted-list) (insert-sorted elem (cdr sorted-list))))))
 
