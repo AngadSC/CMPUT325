@@ -115,7 +115,11 @@ Test cases for subsets0:
 
 (defun subsets0 (L S)
     (sort (subsets0-helper L S) 
-          (lambda (a b) (< (length a) (length b)))))
+          (compare-by-len (a b) (< (length a) (length b)))))
+
+;helper function that functions as lambda, will compare two lists by lenght
+(defun compare-by-len (a b)
+    (< (length a) (length b)))
 
 (defun subsets0-helper (L S)
     (cond 
@@ -147,7 +151,7 @@ Test cases for subsets (with accumulator):
 
 (defun subsets (L S)
     (sort (subset-helper L S '())
-        (lambda ( a b) (< (length a) (length b)))))
+        (compare-by-len ( a b) (< (length a) (length b)))))
 
 (defun subset-helper (L S current)
     (cond   
