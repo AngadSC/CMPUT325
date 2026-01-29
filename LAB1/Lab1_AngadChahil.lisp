@@ -362,3 +362,100 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
             (cons elem sorted-list))
             (t (cons (car sorted-list) (insert-sorted elem (cdr sorted-list))))))
 
+;; ============================================================
+;; COMPREHENSIVE TEST CASES FOR ASSIGNMENT
+;; Copy this entire section to test your code
+;; ============================================================
+
+(print "========== QUESTION 1: count0 ==========")
+(print (count0 '(a 1 (b 2))))           ; Expected: 2 (a, b)
+(print (count0 '(a 1 3 4 (3 a j (b 2))))) ; Expected: 4 (a, a, j, b)
+(print (count0 '()))                     ; Expected: 0
+(print (count0 '(1 2 3)))               ; Expected: 0
+(print (count0 '(a b c)))               ; Expected: 3
+(print (count0 '(a (b (c (d))))))       ; Expected: 4
+(print (count0 '(1 (2 (3)) nil a)))     ; Expected: 1 (only a)
+(print (count0 'a))                      ; Expected: error or 1
+
+(print "========== QUESTION 2: rm-duplicate ==========")
+(print (rm-duplicate '(a b c)))          ; Expected: (A B C)
+(print (rm-duplicate '(a b a c)))        ; Expected: (A B C)
+(print (rm-duplicate '(1 2 3 2 1)))     ; Expected: (1 2 3)
+(print (rm-duplicate '((1 2) (3 4) (1 2)))) ; Expected: ((1 2) (3 4))
+(print (rm-duplicate '()))               ; Expected: NIL
+(print (rm-duplicate '(a a a a)))       ; Expected: (A)
+(print (rm-duplicate '(a b c d e)))     ; Expected: (A B C D E)
+
+(print "========== QUESTION 3A: mix ==========")
+(print (mix '(a c e) '(b d f)))         ; Expected: (A B C D E F)
+(print (mix '(a c e f) '(b d)))         ; Expected: (A B C D E F)
+(print (mix '(a c) '(b d e f)))         ; Expected: (A B C D E F)
+(print (mix '() '(1 2 3)))              ; Expected: (1 2 3)
+(print (mix '(x y z) '()))              ; Expected: (X Y Z)
+(print (mix '(1) '(2)))                 ; Expected: (1 2)
+
+(print "========== QUESTION 3B: split ==========")
+(print (split '(a b c d e f)))          ; Expected: ((A C E) (B D F))
+(print (split '(1 2 3 4 5)))            ; Expected: ((1 3 5) (2 4))
+(print (split '(x y)))                  ; Expected: ((X) (Y))
+(print (split '(z)))                    ; Expected: ((Z) NIL)
+(print (split '()))                     ; Expected: (NIL NIL)
+(print (split '(a b c d)))              ; Expected: ((A C) (B D))
+
+(print "========== QUESTION 4: subsets0 (NO ACCUMULATOR) ==========")
+;; NOTE: Fix the sort syntax errors first!
+(print (subsets0 '(a b c) 2))           ; Expected: (NIL (A) (B) (C) (A B) (A C) (B C))
+(print (subsets0 '(1 2) 1))             ; Expected: (NIL (1) (2))
+(print (subsets0 '(x) 0))               ; Expected: (NIL)
+(print (subsets0 '(a b c) 3))           ; Expected: all subsets including (A B C)
+(print (subsets0 '() 5))                ; Expected: (NIL)
+
+(print "========== QUESTION 4: subsets (WITH ACCUMULATOR) ==========")
+;; NOTE: Fix the sort syntax errors first!
+(print (subsets '(a b c) 2))            ; Expected: (NIL (C) (B) (A) (C B) (C A) (B A))
+(print (subsets '(a b c) 1))            ; Expected: (NIL (C) (B) (A))
+(print (subsets '(1 2) 1))              ; Expected: (NIL (2) (1))
+(print (subsets '(x) 0))                ; Expected: (NIL)
+(print (subsets '(a b c) 3))            ; Expected: all subsets
+
+(print "========== QUESTION 5: substitute-exp ==========")
+(print (substitute-exp 'a 'x '(a b c a)))           ; Expected: (X B C X)
+(print (substitute-exp 'a 'x '(a (b a) c)))         ; Expected: (X (B X) C)
+(print (substitute-exp '(1 2) '(x y) '((1 2) 3 (1 2)))) ; Expected: ((X Y) 3 (X Y))
+(print (substitute-exp 'old 'new '()))              ; Expected: NIL
+(print (substitute-exp 'a 'b '(c d e)))             ; Expected: (C D E)
+(print (substitute-exp 1 99 '(1 (2 1) (3 (1 4))))) ; Expected: (99 (2 99) (3 (99 4)))
+
+(print "========== QUESTION 6: xdelete ==========")
+(print (xdelete nil 5))                             ; Expected: NIL
+(print (xdelete '(nil 5 nil) 5))                    ; Expected: NIL
+(print (xdelete '(nil 5 nil) 3))                    ; Expected: (NIL 5 NIL)
+(print (xdelete '((nil 2 nil) 4 (nil 6 nil)) 2))    ; Expected: (NIL 4 (NIL 6 NIL))
+(print (xdelete '((nil 2 nil) 4 ((nil 5 nil) 6 (nil 8 nil))) 4)) 
+; Expected: ((NIL 2 NIL) 5 ((NIL 5 NIL) 6 (NIL 8 NIL)))
+
+;; Additional BST tests
+(print (xdelete '((nil 1 nil) 3 ((nil 4 nil) 5 (nil 6 nil))) 5))
+(print (xdelete '((nil 1 nil) 3 (nil 5 nil)) 1))
+
+(print "========== QUESTION 7A: reached ==========")
+(print (reached 'a '((a b) (b c) (c d))))           ; Expected: (A B C D) or similar
+(print (reached 'a '((a b) (a c) (b d))))           ; Expected: (A B C D) or similar
+(print (reached 'x '((a b) (b c))))                 ; Expected: (X)
+(print (reached 'a '((a a) (a b))))                 ; Expected: (A B)
+(print (reached 'page1 '((page1 page2) (page2 page3) (page3 page1)))) 
+; Expected: all three pages
+
+(print "========== QUESTION 7B: rank ==========")
+(print (rank '(a b c) '((a b) (a c) (b c))))        
+; Expected: (C B A) - c has 2 refs, b has 1, a has 0
+
+(print (rank '(page1 page2 page3) 
+              '((page1 page2) (page1 page3) (page2 page3) (page3 page2))))
+; Expected: pages sorted by reference count
+
+(print (rank '(x y z) '((x y) (y z))))              
+; Expected: (Y Z X) or (Z Y X) - y and z each have 1 ref
+
+(print (rank '(a b c d) '((a b) (a c) (a d) (b c) (b d))))
+; Expected: (C D B A) - sorted by refs
