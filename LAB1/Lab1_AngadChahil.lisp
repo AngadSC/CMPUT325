@@ -106,7 +106,7 @@ one with even element positions
 
 
 
-#| Question 4 , non accumalator solution retrunign subsets of size S, inputting a list L 
+#| Question 4 , non accumalator solution retrunign subsets of size 0 to  S, inputting a list L 
 Build the result after recursion is completed 
 |#
 
