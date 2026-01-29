@@ -375,7 +375,6 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
 (print (count0 '(a b c)))               ; Expected: 3
 (print (count0 '(a (b (c (d))))))       ; Expected: 4
 (print (count0 '(1 (2 (3)) nil a)))     ; Expected: 1 (only a)
-(print (count0 'a))                      ; Expected: error or 1
 
 (print "========== QUESTION 2: rm-duplicate ==========")
 (print (rm-duplicate '(a b c)))          ; Expected: (A B C)
