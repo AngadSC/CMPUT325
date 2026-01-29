@@ -62,14 +62,15 @@ one to remove duplicate and one that calls it
 
 #| Question 3 part a , alternates between list L1 and L2, returning a list that has all the items 
 |#
+;test cases 
 #|
-Test cases for mix:
-(mix '(a c e) '(b d f)) => (a b c d e f)
-(mix '(a c e f) '(b d)) => (a b c d e f)
-(mix '(a c) '(b d e f)) => (a b c d e f)
-(mix '() '(1 2 3)) => (1 2 3)
-(mix '(x y z) '()) => (x y z)
+(print (mix '(a c e) '(b d f)))
+(print (mix '(a c e f) '(b d)))
+(print (mix '(a c) '(b d e f)))
+(print (mix '() '(1 2 3)))
+(print (mix '(x y z) '()))
 |#
+
 
 (defun mix (L1 L2)
     (cond 
@@ -82,14 +83,15 @@ Test cases for mix:
 #| Question 3 part b, returns two lists, one with all odd element positons 
 one with even element positions
 |#
+
+;test casesa 
 #|
-Test cases for split:
-(split '(a b c d e f)) => ((a c e) (b d f))
-(split '(1 2 3 4 5)) => ((1 3 5) (2 4))
-(split '(x y)) => ((x) (y))
-(split '(z)) => ((z) ())
-(split '()) => (() ())
-(split '(a b c d)) => ((a c) (b d))
+(print (split '(a b c d e f)))
+(print (split '(1  2 3 4 5)))
+(print (split '(x y)))
+(print (split '(z)) )
+(print (split'()))
+(print (split '(a b c d)))
 |#
 
 (defun split (L) 
@@ -108,16 +110,15 @@ Test cases for split:
 Build the result after recursion is completed 
 |#
 
-
+;test cases for Q4 
 #|
-Test cases for subsets0:
-(subsets0 '(a b c) 2) => (() (a) (b) (c) (a b) (a c) (b c))
-(subsets0 '(1 2) 1) => (() (1) (2))
-(subsets0 '(x) 0) => (())
-(subsets0 '(a b c) 3) => (() (a) (b) (c) (a b) (a c) (b c) (a b c))
-(subsets0 '() 5) => (())
-|#
 
+(print (subsets0 '(a b c) 2))
+(print (subsets0 '(1 2) 1))
+(print (subsets0 '(x) 0))
+(print (subsets0 '(a b c) 3))
+(print (subsets0 '() 5))
+|#
   
 (defun compare-by-len (a b)
     (< (length a) (length b)))
@@ -145,17 +146,7 @@ Test cases for subsets0:
                 (cons (cons elem (car subsets))
                     (add-to-sub elem (cdr subsets) max-size)))))
 
-#| Question 4 with an accumulator 
-|#
-#|
-Test cases for subsets (with accumulator):
-(subsets '(a b c) 2) => (() (a) (b) (c) (a b) (a c) (b c))
-(subsets '(a b c) 1) => (() (a) (b) (c))
-(subsets '(1 2) 1) => (() (1) (2))
-(subsets '(x) 0) => (())
-(subsets '(a b c) 3) => (() (a) (b) (c) (a b) (a c) (b c) (a b c))
-(subsets '() 5) => (())
-|#
+
 
 (defun subsets (L S)
     (sort (subset-helper L S '()) 'compare-by-len))
@@ -173,15 +164,8 @@ Test cases for subsets (with accumulator):
 
 #| Question 5, replace E1 in List L with E2, go through each element recursively replacing if E1 
 |#
-#|
-Test cases for substitute-exp:
-(substitute-exp 'a 'x '(a b c a)) => (x b c x)
-(substitute-exp 'a 'x '(a (b a) c)) => (x (b x) c)
-(substitute-exp '(1 2) '(x y) '((1 2) 3 (1 2))) => ((x y) 3 (x y))
-(substitute-exp 'old 'new '()) => ()
-(substitute-exp 'a 'b '(c d e)) => (c d e)
-(substitute-exp 1 99 '(1 (2 1) (3 (1 4)))) => (99 (2 99) (3 (99 4)))
-|#
+
+
 (defun substitute-exp (E1 E2 L)
     (cond 
         ((null L) '())          ; base case empty list 
@@ -196,13 +180,15 @@ Test cases for substitute-exp:
 
 #| Question 6, xdelete function, and helper functions from lecture notes
 |#
+
+;test cases for binary search 
 #|
-Test cases for xdelete:
-(xdelete nil 5) => NIL
-(xdelete '(nil 5 nil) 5) => NIL
-(xdelete '(nil 5 nil) 3) => (NIL 5 NIL)
-(xdelete '((nil 2 nil) 4 (nil 6 nil)) 2) => (NIL 4 (NIL 6 NIL))
-(xdelete '((nil 2 nil) 4 ((nil 5 nil) 6 (nil 8 nil))) 4) => ((NIL 2 NIL) 2 ((NIL 5 NIL) 6 (NIL 8 NIL))) 
+
+(print (xdelete nil 5))
+(print (xdelete '(nil 5 nil) 5))
+(print (xdelete '(nil 5 nil) 3))
+(print (xdelete '((nil 2 nil) 4 (nil 6 nil)) 2))
+(print (xdelete '((nil 2 nil) 4 ((nil 5 nil) 6 (nil 8 nil))) 4))
 |#
 
 (defun isEmptyTree (Tr)
@@ -348,7 +334,7 @@ SO find all pairs that are X,Y - > and return a list of the Ys.
         ((null L) '())
         (t (cons (car (car L))  (extract-page (cdr L))))))
 
-#| Sorting function uses a simple insertion sort 
+#| Sorting function 
 |#
 (defun my-sort (L)
     (cond 
