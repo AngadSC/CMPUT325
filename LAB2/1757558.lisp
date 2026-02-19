@@ -199,13 +199,18 @@
             (body2 (fl-subst body env)))
       (fl-interp body2 p)))
 
-
+(defun fl-proper-list-p (x)
+  (cond 
+    ((null x ) t)
+    ((consp x) (fl-proper-list-p (cdr x)))
+    (t nil)))
 ; main inteprerter 
 
 (defun fl-interp (E P)
 (cond
 ; if its an atom itself 
     ((atom E) E)
+    ((and (consp E) (not (fl-proper-list-p E))) E)
     
     (t
     (let* ((f(car E))
@@ -240,8 +245,7 @@
          (t E))))))
 
 
-;;;; ----------------------------
-;;;; Example program from your notes (optional)
+;from notes 
 (defparameter *user-defined-progs*
   '(
     (double (x) = (+ x x))
