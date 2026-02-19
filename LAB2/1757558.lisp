@@ -237,7 +237,7 @@
               (t E))))                                    
 
        ; undefined operator 
-         (t E))))))
+         (t (mapcar (lambda (x) (fl-interp x p)) e)))))))
 
 
 ;;;; ----------------------------
