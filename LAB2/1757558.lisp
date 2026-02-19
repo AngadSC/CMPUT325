@@ -242,20 +242,17 @@
 
 ;;;; ----------------------------
 ;;;; Example program from your notes (optional)
-;;;; ----------------------------
-
-(defparameter *user-defined-progs*                    ; Define a global variable holding sample user-defined FL functions.
+(defparameter *user-defined-progs*
   '(
-    (double (x) = (+ x x))                           ; double(x) = x + x
-    (quadruple (x) = (double (double x)))            ; quadruple(x) = double(double(x))
-    (my-len (L) = (if (null L) 0 (+ 1 (my-len (cdr L))))) ; length(L) recursively
-    (my-member (x L) = (if (null L) nil (if (equal x (car L)) T (my-member x (cdr L))))) ; membership test
-    (my-append (L1 L2) = (if (null L1) L2 (cons (car L1) (my-append (cdr L1) L2)))) ; append
-    (my-reverse (L) = (if (null L) nil (my-append (my-reverse (cdr L)) (cons (car L) nil)))) ; reverse
-    (fib (n) = (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2))))) ; fibonacci
-    (range (n) = (if (= n 0) nil (cons n (range (- n 1))))) ; range down to 1
-    (my-map (F L) = (if (null L) nil (cons (F (car L)) (my-map F (cdr L))))) ; map function over list
-    (my-filter (P L) = (if (null L) nil (if (P (car L)) (cons (car L) (my-filter P (cdr L))) (my-filter P (cdr L))))) ; filter
-    (my-reduce (F Acc L) = (if (null L) Acc (my-reduce F (F Acc (car L)) (cdr L)))))) ; reduce/fold
-
+    (double (x) = (+ x x))
+    (quadruple (x) = (double (double x)))
+    (my-len (L) = (if (null L) 0 (+ 1 (my-len (cdr L)))))
+    (my-member (x L) = (if (null L) nil (if (equal x (car L)) T (my-member x (cdr L)))))
+    (my-append (L1 L2) = (if (null L1) L2 (cons (car L1) (my-append (cdr L1) L2))))
+    (my-reverse (L) = (if (null L) nil (my-append (my-reverse (cdr L)) (cons (car L) nil))))
+    (fib (n) = (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))
+    (range (n) = (if (= n 0) nil (cons n (range (- n 1)))))
+    (my-map (F L) = (if (null L) nil (cons (F (car L)) (my-map F (cdr L)))))
+    (my-filter (P L) = (if (null L) nil (if (P (car L)) (cons (car L) (my-filter P (cdr L))) (my-filter P (cdr L)))))
+    (my-reduce (F Acc L) = (if (null L) Acc (my-reduce F (F Acc (car L)) (cdr L))))))
     
