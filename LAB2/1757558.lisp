@@ -34,6 +34,7 @@
                 (params (and (consp d) (cadr d)))
                 (eqsign (and ( consp d) (caddr d)))
                 (body ( and (consp d) (cadddr d))))
+                (declare (ignore body))
                 (if (and (eq name fname)
                     (listp params)
                     (eq eqsign '=)
@@ -139,23 +140,22 @@
 
     ;; AND short-circuit
     ((eq op 'and)
-     (labels ((sc (xs)
-                (cond
-                  ((null xs) t)
-                  (t
-                   (let ((v (fl-interp (car xs) p)))
-                     (if v (sc (cdr xs)) nil)))))))
-       (sc args)))
+ (labels ((sc (xs)
+               (cond
+                 ((null xs) t)
+                 (t
+                  (let ((v (fl-interp (car xs) p)))
+                    (if v (sc (cdr xs)) nil))))))
+   (sc args)))
 
-    ;; OR short-circuit
-    ((eq op 'or)
-     (labels ((sc (xs)
-                (cond
-                  ((null xs) nil)
-                  (t
-                   (let ((v (fl-interp (car xs) p)))
-                     (if v v (sc (cdr xs)))))))))
-       (sc args)))
+((eq op 'or)
+ (labels ((sc (xs)
+               (cond
+                 ((null xs) nil)
+                 (t
+                  (let ((v (fl-interp (car xs) p)))
+                    (if v v (sc (cdr xs))))))))
+   (sc args)))
 
     ;; eager primitives
     (t
@@ -213,7 +213,7 @@
       ; if operato is primtive then we recongize it an apploy the primaitve operatio nit needs by helper funciton aboe   
       (cond 
         ((and (symbolp f) (fl-primop-p f))
-        (fl-apply-prim f args P)))
+        (fl-apply-prim f args P))
 
      ; for a defined ufnciton , substitues the function into the body as needed 
             ((and (symbolp f) (fl-user-fun-p f (length args) P)) 
@@ -234,11 +234,10 @@
                (fl-apply-lambda fv args P))           
               ((symbolp fv)                            
                (fl-interp (cons fv args) P))           
-              (t
-               E))))                                   
+              (t E))))                                   
 
        ; undefined operator 
-         (t E)))))          
+         (t E))))))         
 
 
 
