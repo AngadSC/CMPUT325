@@ -137,24 +137,27 @@
                          (eval-clauses (cdr cls))))))))
        (eval-clauses args)))
 
+    ;; AND short-circuit
     ((eq op 'and)
-     (labels ((go (xs)
+     (labels ((sc (xs)
                 (cond
                   ((null xs) t)
                   (t
                    (let ((v (fl-interp (car xs) p)))
-                     (if v (go (cdr xs)) nil)))))))
-       (go args)))
+                     (if v (sc (cdr xs)) nil)))))))
+       (sc args)))
 
+    ;; OR short-circuit
     ((eq op 'or)
-     (labels ((go (xs)
+     (labels ((sc (xs)
                 (cond
                   ((null xs) nil)
                   (t
                    (let ((v (fl-interp (car xs) p)))
-                     (if v v (go (cdr xs)))))))))
-       (go args)))
+                     (if v v (sc (cdr xs)))))))))
+       (sc args)))
 
+    ;; eager primitives
     (t
      (let ((ev (fl-eval-args args p)))
        (cond
@@ -181,7 +184,7 @@
          ((eq op 'abs) (abs (first ev)))
          ((eq op 'not) (not (first ev)))
 
-         (t (cons op args)))))
+         (t (cons op args))))))))
 
 ;lambda applicaiton 
 ; applies the lamdba expression  LAM 
