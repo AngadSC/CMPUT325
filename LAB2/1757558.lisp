@@ -197,7 +197,7 @@
             (evargs (fl-eval-args arg-exprs p))
             (env (fl-pairlis params evargs))
             (body2 (fl-subst body env)))
-            (fl-interp body2 p)))
+      (fl-interp body2 p)))
 
 
 ; main inteprerter 
@@ -234,11 +234,10 @@
                (fl-apply-lambda fv args P))           
               ((symbolp fv)                            
                (fl-interp (cons fv args) P))           
-              (t E))))                                   
+              (t E))))                                    
 
        ; undefined operator 
-         (t E))))))         
-
+         (t E))))))
 
 
 ;;;; ----------------------------
