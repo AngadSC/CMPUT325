@@ -1,4 +1,8 @@
-
+#| Angad Chahil
+ID- 1757558
+CCID - achahil
+CMPUT 325
+|#
 
 ; helpers fucnctuions 
 ;checks that check if sum is a primitive function or not 
@@ -138,7 +142,7 @@
                          (eval-clauses (cdr cls))))))))
        (eval-clauses args)))
 
-    ;; AND short-circuit
+    ; short cucruit for and 
     ((eq op 'and)
  (labels ((sc (xs)
                (cond
@@ -157,7 +161,7 @@
                     (if v v (sc (cdr xs))))))))
    (sc args)))
 
-    ;; eager primitives
+    ; primitives
     (t
      (let ((ev (fl-eval-args args p)))
        (cond
