@@ -5,11 +5,11 @@
 (defun fl-primop-p (sym)
     (and (symbolp sym)
         (member sym             ; just checks if its a part of one of those primrtive operaitons 
-            '((if cond and or quote             
+            '(if cond and or quote             
                  null atom eq equal numberp      
                  car cdr first rest cons list   
                  + - * / < > = <= >= abs not)     
-               :test #'eq))))
+                #'eq)))
 
 ; check if e is a lambdaexpression with the form (lambda (params) body)
 
@@ -96,6 +96,12 @@
     
     (t (mapcar (lambda (x) (fl-subst x env)) expr)))) 
 
+(defun fl-pairlis (key vals)
+  (cond 
+    ((null keys) nil)
+    (t
+      (cons (cons(car keys) (car vals))
+        (fl-pairlis (cdr keys) (cdr vals))))))
 
 ;evalutes an argyuement expression 
 (defun fl-eval-args (a p)
@@ -107,19 +113,19 @@
 
 ; applying the primtives 
 
-(defun fl-apply-prim (op a p)
+(defun fl-apply-prim (op args p)
  
   (cond
   ; checks if its a qute 
     ((eq op 'quote)
     
-     (car a))
+     (car args))
 ;checks if its IF, evlautes tonly if we have condition and returns the branch 
     ((eq op 'if)
-     (let ((c (fl-interp (first a) p)))
+     (let ((c (fl-interp (first args) p)))
        (if c
-           (fl-interp (second a) p)
-           (fl-interp (third a) p))))
+           (fl-interp (second args) p)
+           (fl-interp (third args) p))))
 
 ;checks for COND,  extracts both parts and calls the eval 
     ((eq op 'cond)
@@ -135,7 +141,7 @@
                 (fl-interp expr p)
                     (eval-clauses (cdr cls))))))))
     
-    (eval-clauses a)))
+    (eval-clauses args)))
 
 ; evalutes for and 
 ; checks for short circuit like if false then we switch to nul 
@@ -145,7 +151,7 @@
             ((null xs) t)
                 (t 
                     (let ((v (fl-interp (car xs) p)))
-                        (if v (go (cdr xs)) nil))))))
+                        (if v (go (cdr xs)) nil)))))))
     
     (go args)))
 
@@ -159,9 +165,40 @@
                   ((null xs) nil)                  
                   (t
                    (let ((v (fl-interp (car xs) prog))) 
-                     (if v v (go (cdr xs))))))))    
+                     (if v v (go (cdr xs)))))))))   
        (go args)))    
 
+(t
+     (let ((ev (fl-eval-args args p)))
+       (cond
+         
+         ((eq op 'null)    (null (first ev)))
+         ((eq op 'atom)    (atom (first ev)))
+         ((eq op 'numberp) (numberp (first ev)))
+         ((eq op 'eq)      (eq (first ev) (second ev)))
+         ((eq op 'equal)   (equal (first ev) (second ev)))
+
+         ;; list ops
+         ((or (eq op 'car) (eq op 'first)) (car (first ev)))
+         ((or (eq op 'cdr) (eq op 'rest))  (cdr (first ev)))
+         ((eq op 'cons) (cons (first ev) (second ev)))
+         ((eq op 'list) ev)
+
+       
+         ((eq op '+)  (+  (first ev) (second ev)))
+         ((eq op '-)  (-  (first ev) (second ev)))
+         ((eq op '*)  (*  (first ev) (second ev)))
+         ((eq op '/)  (/  (first ev) (second ev)))
+         ((eq op '<)  (<  (first ev) (second ev)))
+         ((eq op '>)  (>  (first ev) (second ev)))
+         ((eq op '=)  (=  (first ev) (second ev)))
+         ((eq op '<=) (<= (first ev) (second ev)))
+         ((eq op '>=) (>= (first ev) (second ev)))
+         ((eq op 'abs) (abs (first ev)))
+         ((eq op 'not) (not (first ev)))
+
+       
+         (t (cons op args)))))
 
 
 ;lambda applicaiton 
@@ -174,8 +211,8 @@
             (body  (caddr lam))
             (evargs (fl-eval-args arg-exprs p))
             (env (fl-pairlis params evargs))
-            (bodt2 (fl-subst body env))
-            (fl-interp body2 p))))))
+            (body2 (fl-subst body env)))
+            (fl-interp body2 p)))
 
 
 ; main inteprerter 
