@@ -5,12 +5,11 @@
 (defun fl-primop-p (sym)
     (and (symbolp sym)
         (member sym             ; just checks if its a part of one of those primrtive operaitons 
-            '(if cond and or quote             
-                 null atom eq equal numberp      
-                 car cdr first rest cons list   
-                 + - * / < > = <= >= abs not)     
-                #'eq)))
-
+            '(if cond and or quote
+                 null atom eq equal numberp
+                 car cdr first rest cons list
+                 + - * / < > = <= >= abs not)
+               :test #'eq)))
 ; check if e is a lambdaexpression with the form (lambda (params) body)
 
 (defun fl-lambda-p (e)
@@ -96,7 +95,7 @@
     
     (t (mapcar (lambda (x) (fl-subst x env)) expr)))) 
 
-(defun fl-pairlis (key vals)
+(defun fl-pairlis (keys vals)
   (cond 
     ((null keys) nil)
     (t
@@ -113,78 +112,63 @@
 
 ; applying the primtives 
 
+
 (defun fl-apply-prim (op args p)
- 
   (cond
-  ; checks if its a qute 
     ((eq op 'quote)
-    
      (car args))
-;checks if its IF, evlautes tonly if we have condition and returns the branch 
+
     ((eq op 'if)
      (let ((c (fl-interp (first args) p)))
        (if c
            (fl-interp (second args) p)
            (fl-interp (third args) p))))
 
-;checks for COND,  extracts both parts and calls the eval 
     ((eq op 'cond)
-    (labels ((eval-clauses (cls)
-        (cond 
-            ((null cls) nil)
-            (t 
-            (let* ((cl  (car cls))
-            (test (car cl))
-            (expr (cadr cl)))
-        
-            (if (fl-interp test p)
-                (fl-interp expr p)
-                    (eval-clauses (cdr cls))))))))
-    
-    (eval-clauses args)))
-
-; evalutes for and 
-; checks for short circuit like if false then we switch to nul 
-    ((eq op 'and)
-    (labels ((go (xs)
-        (cond   
-            ((null xs) t)
-                (t 
-                    (let ((v (fl-interp (car xs) p)))
-                        (if v (go (cdr xs)) nil)))))))
-    
-    (go args)))
-
-; for OR 
-; has recruse for short cituit too, 
-; if one part returns as true returns, else it trires the nextzxs 
-
-((eq op 'or)                                  
-     (labels ((go (xs)                              
+     (labels ((eval-clauses (cls)
                 (cond
-                  ((null xs) nil)                  
+                  ((null cls) nil)
                   (t
-                   (let ((v (fl-interp (car xs) prog))) 
-                     (if v v (go (cdr xs)))))))))   
-       (go args)))    
+                   (let* ((cl   (car cls))
+                          (test (car cl))
+                          (expr (cadr cl)))
+                     (if (fl-interp test p)
+                         (fl-interp expr p)
+                         (eval-clauses (cdr cls))))))))
+       (eval-clauses args)))
 
-(t
+    ((eq op 'and)
+     (labels ((go (xs)
+                (cond
+                  ((null xs) t)
+                  (t
+                   (let ((v (fl-interp (car xs) p)))
+                     (if v (go (cdr xs)) nil)))))))
+       (go args)))
+
+    ((eq op 'or)
+     (labels ((go (xs)
+                (cond
+                  ((null xs) nil)
+                  (t
+                   (let ((v (fl-interp (car xs) p)))
+                     (if v v (go (cdr xs)))))))))
+       (go args)))
+
+    (t
      (let ((ev (fl-eval-args args p)))
        (cond
-         
          ((eq op 'null)    (null (first ev)))
          ((eq op 'atom)    (atom (first ev)))
          ((eq op 'numberp) (numberp (first ev)))
          ((eq op 'eq)      (eq (first ev) (second ev)))
          ((eq op 'equal)   (equal (first ev) (second ev)))
 
-         ;; list ops
          ((or (eq op 'car) (eq op 'first)) (car (first ev)))
          ((or (eq op 'cdr) (eq op 'rest))  (cdr (first ev)))
          ((eq op 'cons) (cons (first ev) (second ev)))
          ((eq op 'list) ev)
 
-       
          ((eq op '+)  (+  (first ev) (second ev)))
          ((eq op '-)  (-  (first ev) (second ev)))
          ((eq op '*)  (*  (first ev) (second ev)))
@@ -197,9 +181,7 @@
          ((eq op 'abs) (abs (first ev)))
          ((eq op 'not) (not (first ev)))
 
-       
          (t (cons op args)))))
-
 
 ;lambda applicaiton 
 ; applies the lamdba expression  LAM 
