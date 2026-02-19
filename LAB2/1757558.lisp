@@ -184,7 +184,7 @@
          ((eq op 'abs) (abs (first ev)))
          ((eq op 'not) (not (first ev)))
 
-         (t (cons op args))))))))
+         (t (cons op args)))))))
 
 ;lambda applicaiton 
 ; applies the lamdba expression  LAM 
@@ -255,4 +255,3 @@
     (my-map (F L) = (if (null L) nil (cons (F (car L)) (my-map F (cdr L)))))
     (my-filter (P L) = (if (null L) nil (if (P (car L)) (cons (car L) (my-filter P (cdr L))) (my-filter P (cdr L)))))
     (my-reduce (F Acc L) = (if (null L) Acc (my-reduce F (F Acc (car L)) (cdr L))))))
-    
