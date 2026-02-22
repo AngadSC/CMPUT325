@@ -1,0 +1,116 @@
+1. Write it out into lambda form full form 
+
+((( (lambda (x)
+      (lambda (y)
+        (lambda (z)
+          (x (y (y z))))))
+
+    (lambda (x) x))
+
+   (lambda (x) (x (q q))))
+
+  a)
+
+Now that i have it written out we can strart with NOR 
+
+Each is broken down above so the first statment 
+I can break the (((A B) C) D), going down with the first being A ... etc 
+With this the outermost is A B 
+so we subsitute B into wherever we have occurenes of x 
+then we get 
+
+      (lambda (y)
+        (lambda (z)
+          ((lambda (x) x) (y (y z)))))
+        Then we apply NOR again so replace occurnce of y with C which is 
+        (lambda (x) (x (q q)))
+
+
+(lambda (z)
+          ((lambda (x) x) ((lambda (x) (x (q q))) ((lambda (x) (x (q q))) z))))
+
+now we do the apply NOR again so replace z with a basically 
+
+((lambda (x) x) ((lambda (x) (x (q q))) ((lambda (x) (x (q q))) a)))
+So our outer lambda rn is ((lambda (x) x) argument) 
+and since we replace the occurcnes of the param in the body with the arugment we are just left with the arugment 
+
+((lambda (x) (x (q q)))
+ ((lambda (x) (x (q q))) a))
+ giving us that, now we replace the outer lambda param with its arugment 
+
+ (((lambda (x) (x (q q))) a) (q q))
+ now again we have argument of a with this part ((lambda (x) (x (q q))) a)
+ replace the x with a and we get
+ ((a (q q)) (q q)) and we are done with NOR reduction 
+ Now with AOR 
+
+ So we do innermost first 
+ the only part of our expresion that has a redex is (A B) from above so both NOR and AOR reduce that first 
+ 
+ and will give us 
+ (lambda (y)
+        (lambda (z)
+          ((lambda (x) x) (y (y z)))))
+
+and even from here we have to do the same reduction as we did with NOR
+
+(lambda (z)
+          ((lambda (x) x) ((lambda (x) (x (q q))) ((lambda (x) (x (q q))) z))))
+
+and then the same thig we can't apply the reudction in any way thats diffent than NOR
+
+((lambda (x) x) ((lambda (x) (x (q q))) ((lambda (x) (x (q q))) a)))
+So the inntermost is 
+((lambda (x) (x (q q))) a)
+
+so we replace the params with the arugment 
+so (a (q q))
+so now we get 
+((lambda (x) x) ((lambda (x) (x (q q))) )(a (q q)))
+now we go to the next innermost lambda 
+((lambda (x) (x (q q))) )(a (q q))
+
+again we put in the arg as param
+ ((a (q q)) (q q))
+ and that gives us 
+ ((lambda (x) x)
+ ((a (q q)) (q q)))
+ and with the lambda (x) x we jsut return the argument giving us 
+ ((a (q q)) (q q))
+ So the same as NOR 
+
+
+ Question 2 
+ Part A
+
+ CT0
+ ((f 3) 2) - our arugnemtns are just 3 and 2 
+  where our F is  F = (lambda (x) (lambda (y) (* (+ 5 x) y)))
+  [ (lambda (x) (lambda (y) (* (+ 5 x) y))) , CT0 ]
+  And wwe have to elaute against the numbers so styarting with 3 
+  [F, CT0] to 3 we apply the closure 
+  so CT1 = {x = 3 } U CT0
+  so thats the first context we assign x to the value 3 
+  now we evalute the body to this 
+
+[ (lambda (y) (* (+ 5 x) y)) , CT1 ]
+
+[f, Ct1] 2
+and we apply the closure to the second number 
+Ct2 = { y =2 } U CT1 
+giving us our second assingned vlaue 
+
+and now we evaluate the body using all ourt assinged values
+(*(+ 5 x) y) again x= 3 and y =2 
+(* ( + 5 3 ) 2 ) = 16 
+
+Part B 
+
+First we apply (lambda (x z) ( x z)) to its 2 args being (lambda (x) (* x 2)) and 8 
+sdo Ct1 = { x =  (lambda (x) (* x 2)), z =8} U CT0
+ now we need to do that inner call 
+ x points to another closure since its another lambda 
+ so Ct2 = {x = 8} U Ct0 
+ and now with tis we evalute the body with the assinged values 
+ ( * x 2 ) = ( * 8 2 ) = 16 
