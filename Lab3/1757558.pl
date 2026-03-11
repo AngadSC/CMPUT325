@@ -37,11 +37,11 @@ filter([], _, _, []).
 
 filter([H|T], OP, N, L1) :-
     is_list(H),         % so yes its a list then we recurse into the list, fails jump to next clause which handles it beinga  number 
-    filter(H, OP, N, lh),
+    filter(H, OP, N, Lh),
     filter(T, OP, N, Lt),       % do for both the head that we popped out adn the tail, 
-    append(lh, Lt, L1).         % combines those two outputs int one list 
+    append(Lh, Lt, L1).         % combines those two outputs int one list 
 
-filter([H|T], OP, N, L1) :-
+filter([H|T], OP, N, [H|L1]) :-
     satisfies(OP, H, N),
     filter(T, OP, N, L1).       % run filter on the rest
 
@@ -49,4 +49,11 @@ filter([H|T], OP, N, L1) :-     % fails to satfify the condiion
     \+ satisfies(OP, H, N),
     filter(T, OP, N, L1).           % skip the head recurse on the tail 
 
+satisfies(equal, X, N) :-
+    X =:= N.
+satisfies(greaterThan, X, N) :-
+    X > N.
 
+satisfies(lessThan, X, N) :-
+    X < N.
+    
