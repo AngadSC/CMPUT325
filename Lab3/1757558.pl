@@ -16,7 +16,8 @@ setDiff([H|T], S2, [H|S3]) :-
     setDiff(T,S2,S3).
 
 
-% Question 2, 
+% Question 2, we just switch the frist two elements and then leave them and send the rest into another call 
+
 
 % base case
 exchange ([],[]).
@@ -27,3 +28,25 @@ exchange([A],[A]).
 
 exchange([A,B|T], [B,A|R]) :-
     exchange(T,R).
+
+
+% Question 3 , so we add into L1 our output. L is nested so need to recurse into the lists
+
+
+filter([], _, _, []).
+
+filter([H|T], OP, N, L1) :-
+    is_list(H),         % so yes its a list then we recurse into the list, fails jump to next clause which handles it beinga  number 
+    filter(H, OP, N, lh),
+    filter(T, OP, N, Lt),       % do for both the head that we popped out adn the tail, 
+    append(lh, Lt, L1).         % combines those two outputs int one list 
+
+filter([H|T], OP, N, L1) :-
+    satisfies(OP, H, N),
+    filter(T, OP, N, L1).       % run filter on the rest
+
+filter([H|T], OP, N, L1) :-     % fails to satfify the condiion
+    \+ satisfies(OP, H, N),
+    filter(T, OP, N, L1).           % skip the head recurse on the tail 
+
+
