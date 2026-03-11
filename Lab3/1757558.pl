@@ -20,8 +20,9 @@ setDiff([H|T], S2, [H|S3]) :-
 
 
 % base case
-exchange ([],[]).
 
+
+exchange([],[]).
 % a list with only one elment itll be the basecase if list is odd
 
 exchange([A],[A]).
@@ -56,4 +57,4 @@ satisfies(greaterThan, X, N) :-
 
 satisfies(lessThan, X, N) :-
     X < N.
-    
+
