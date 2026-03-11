@@ -58,3 +58,35 @@ satisfies(greaterThan, X, N) :-
 satisfies(lessThan, X, N) :-
     X < N.
 
+
+
+% Queston 4 , we need to count every occurence of every atom and just return biggest oe 
+
+
+countOccurence(_, [], 0).
+
+countOccurence(X, [X|T], N) :-
+    countOccurence(X, [X|T], N),        % if the head is equal  x then we add 1 and recurse the rest 
+    N is N1 + 1 
+
+countOccurence(X, [H|T], N) :-
+    X \= H, 
+    countOccurences(X, T, N).       % head diff just recuese the tail 
+
+countMax([H|T], N) :-               % traet atom 1 as the current max til a beter is found 
+    countOccurence(H, [H|T], C),
+    countMaxHelper(T, [H|T], H, C, N). 
+
+
+countMaxHelper ([], _, BestAtom, BestCount, [BestAtom, BestCount]). % base case we have gone throiuhg all atoms 
+
+
+countMaxHelper([H|T], Original, BestAtom, BestCount, Result) :-     % the count is bigger than our curernt so we assing it as the biggest curerntyl 
+    countOccurence(H, Original, Count ),
+    Count > BestCount,
+    countMaxHelper(T, Original, H, Count, Result).
+
+countmaxHelper([H|T], Original, BestAtom, BestCount, Result) :-        % not bigger keep current winner 
+    countOccurence(H, Original, Count), 
+    Count =< BestCount,
+    countMaxHelper(T, Original, BestAtom, BestCount, Result). 
