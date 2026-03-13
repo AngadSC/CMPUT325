@@ -106,7 +106,7 @@ sub([H|T], S, [H1|T1]) :-
     sub(T, S, T1).
 
 sub ([H|T], S, [R|T1]) :-
-    replaceAtom(H,S)
+    replaceAtom(H,S),
     sub(T,S,T1).        % recurse on just the tail since head is atom 
 
 replaceAtom(X, [], X). 
