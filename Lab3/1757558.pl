@@ -66,7 +66,7 @@ satisfies(lessThan, X, N) :-
 countOccurence(_, [], 0).
 
 countOccurence(X, [X|T], N) :-
-    countOccurence(X, T, N),        % if the head is equal  x then we add 1 and recurse the rest 
+    countOccurence(X, T, N1),        % if the head is equal  x then we add 1 and recurse the rest 
     N is N1 + 1.
 
 countOccurence(X, [H|T], N) :-
