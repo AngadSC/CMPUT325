@@ -66,12 +66,12 @@ satisfies(lessThan, X, N) :-
 countOccurence(_, [], 0).
 
 countOccurence(X, [X|T], N) :-
-    countOccurence(X, [X|T], N),        % if the head is equal  x then we add 1 and recurse the rest 
-    N is N1 + 1 
+    countOccurence(X, T, N),        % if the head is equal  x then we add 1 and recurse the rest 
+    N is N1 + 1.
 
 countOccurence(X, [H|T], N) :-
     X \= H, 
-    countOccurences(X, T, N).       % head diff just recuese the tail 
+    countOccurence(X, T, N).       % head diff just recuese the tail 
 
 countMax([H|T], N) :-               % traet atom 1 as the current max til a beter is found 
     countOccurence(H, [H|T], C),
@@ -86,7 +86,7 @@ countMaxHelper([H|T], Original, BestAtom, BestCount, Result) :-     % the count 
     Count > BestCount,
     countMaxHelper(T, Original, H, Count, Result).
 
-countmaxHelper([H|T], Original, BestAtom, BestCount, Result) :-        % not bigger keep current winner 
+countMaxHelper([H|T], Original, BestAtom, BestCount, Result) :-        % not bigger keep current winner 
     countOccurence(H, Original, Count), 
     Count =< BestCount,
     countMaxHelper(T, Original, BestAtom, BestCount, Result). 
