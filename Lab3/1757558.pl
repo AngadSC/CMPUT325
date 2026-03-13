@@ -93,3 +93,30 @@ countMaxHelper([H|T], Original, BestAtom, BestCount, Result) :-        % not big
     countOccurence(H, Original, Count), 
     Count =< BestCount,
     countMaxHelper(T, Original, BestAtom, BestCount, Result). 
+
+
+% Question 5, replace the elemtn if its in the S list, and its not there then we leave 
+% L may be nested so need to recurse intio 
+
+sub ([], _, []).
+
+sub([H|T], S, [H1|T1]) :-
+    is_list(H),
+    sub(H, S, H1),          % if its lsit recurse into the H and the T gets it on call 
+    sub(T, S, T1).
+
+sub ([H|T], S, [R|T1]) :-
+    replaceAtom(H,S)
+    sub(T,S,T1).        % recurse on just the tail since head is atom 
+
+replaceAtom(X, [], X). 
+
+replaceAtom(X, [[X,E]|_], E).       % first pair is a match so we can do the replacement
+
+replaceAtom(X, [[Y,_]|T], R) :-         % first paiur did not match 
+    X \= Y
+    replaceAtom(X, T, R). 
+
+
+
+
