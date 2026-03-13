@@ -78,7 +78,10 @@ countMax([H|T], N) :-               % traet atom 1 as the current max til a bete
     countMaxHelper(T, [H|T], H, C, N). 
 
 
-countMaxHelper ([], _, BestAtom, BestCount, [BestAtom, BestCount]). % base case we have gone throiuhg all atoms 
+
+ % base case we have gone throiuhg all atoms 
+
+countMaxHelper([], _, BestAtom, BestCount, [BestAtom, BestCount]).
 
 
 countMaxHelper([H|T], Original, BestAtom, BestCount, Result) :-     % the count is bigger than our curernt so we assing it as the biggest curerntyl 
