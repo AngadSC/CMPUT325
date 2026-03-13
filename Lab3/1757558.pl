@@ -98,15 +98,15 @@ countMaxHelper([H|T], Original, BestAtom, BestCount, Result) :-        % not big
 % Question 5, replace the elemtn if its in the S list, and its not there then we leave 
 % L may be nested so need to recurse intio 
 
-sub ([], _, []).
+sub([], _, []).
 
 sub([H|T], S, [H1|T1]) :-
     is_list(H),
     sub(H, S, H1),          % if its lsit recurse into the H and the T gets it on call 
     sub(T, S, T1).
 
-sub ([H|T], S, [R|T1]) :-
-    replaceAtom(H,S),
+sub([H|T], S, [R|T1]) :-
+    replaceAtom(H,S,R),
     sub(T,S,T1).        % recurse on just the tail since head is atom 
 
 replaceAtom(X, [], X). 
@@ -114,9 +114,45 @@ replaceAtom(X, [], X).
 replaceAtom(X, [[X,E]|_], E).       % first pair is a match so we can do the replacement
 
 replaceAtom(X, [[Y,_]|T], R) :-         % first paiur did not match 
-    X \= Y
+    X \= Y,
     replaceAtom(X, T, R). 
 
 
 
 
+% Question 6
+% needs to generate the subsets, and kee the ones that have pairs where the nodes are connected 
+
+clique(L) :-
+    findall(X, node(X), Nodes),
+    subset(Nodes, L),
+    is_clique(L). 
+
+% each atom we can either inlcude or exlude so we recurse on both of those otpions 
+subset([],[]).
+subset([H|T], [H|Rest]) :-          % one subset can start with the front 
+    subset(T, Rest).
+
+subset([_|T], Rest) :-          % the subset can contain anything other than the head 
+    subset(T, Rest).
+
+
+% check if the subset we have is a clique 
+isClique([]).
+isClique([_]).          % single node 
+isClique([H|T]) :-
+    connectedTo(H,T),
+    isClique(T).
+
+
+% checks if one nodes is conncted to eveyr other node thats in the list 
+connectedTo(_, []).
+connectedTo(X, [H|T]) :-
+    connected(X, H),            % ture if X conncted to H
+    connectedTo(X, T).          % true if connected to the rest, we just recurse on the tail 
+
+% edges undirected checks as longas one direction is true we are good 
+connected(X, Y) :-
+    edge(X, Y).
+connected(X, Y) :-
+    edge(Y, X).
