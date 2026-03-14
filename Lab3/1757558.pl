@@ -166,7 +166,7 @@ connected(X, Y) :-
     edge(Y, X).
 
 
-% Quesito 7 , used p instead of q it was making the code look weird on vscdeo  p =q
+% Quesito 7 , 
 
 :- use_module(library(lists)).
 
@@ -181,13 +181,13 @@ outsideQuotes([e|T], R) :-
     outsideQuotes(T,R). 
 
 % if we have a q then we recurse for tbe nbext q, if not found we have to replace har with w 
-outsideQuotes([p|T], [p|R]) :-
-    append(Between, [p|Rest], T), !,
-    append(Between, [p|R1], R),     % found q, copy string between, recurse on the rest 
+outsideQuotes([q|T], [q|R]) :-
+    append(Between, [q|Rest], T), !,
+    append(Between, [q|R1], R),     % found q, copy string between, recurse on the rest 
     outsideQuotes(Rest,R1).
 
 % this one if we dont have found a second q 
-outsideQuotes([p|R], [p|R]) :-
+outsideQuotes([q|T], [q|R]) :-
     outsideQuotes(T, R).
 
 % outside the quotes 
