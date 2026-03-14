@@ -1,3 +1,11 @@
+% Angad Chahil
+% ID- 1757558
+% CCID - achahil
+% CMPUT 325
+
+
+
+
 % Question  1 
 % SO S3 is the set difference betweeen S2 and S1. 
 % base case would be empty S1, maybe use a cut to not evalute S2 in taht case 
@@ -126,7 +134,7 @@ replaceAtom(X, [[Y,_]|T], R) :-         % first paiur did not match
 clique(L) :-
     findall(X, node(X), Nodes),
     subset(Nodes, L),
-    is_clique(L). 
+    isClique(L). 
 
 % each atom we can either inlcude or exlude so we recurse on both of those otpions 
 subset([],[]).
@@ -139,7 +147,7 @@ subset([_|T], Rest) :-          % the subset can contain anything other than the
 
 % check if the subset we have is a clique 
 isClique([]).
-isClique([_]).          % single node 
+          
 isClique([H|T]) :-
     connectedTo(H,T),
     isClique(T).
@@ -156,3 +164,33 @@ connected(X, Y) :-
     edge(X, Y).
 connected(X, Y) :-
     edge(Y, X).
+
+
+% Quesito 7 , used p instead of q it was making the code look weird on vscdeo  p =q
+
+:- use_module(library(lists)).
+
+convert(Term, Result) :-
+    outsideQuotes(Term, Result).
+
+outsideQuotes([],[]).
+
+
+% rempves the spaces annd we remove char to w before we get to q 
+outsideQuotes([e|T], R) :-
+    outsideQuotes(T,R). 
+
+% if we have a q then we recurse for tbe nbext q, if not found we have to replace har with w 
+outsideQuotes([p|T], [p|R]) :-
+    append(Between, [p|Rest], T), !,
+    append(Between, [p|R1], R),     % found q, copy string between, recurse on the rest 
+    outsideQuotes(Rest,R1).
+
+% this one if we dont have found a second q 
+outsideQuotes([p|R], [p|R]) :-
+    outsideQuotes(T, R).
+
+% outside the quotes 
+outsideQuotes([_|T], [w|R]) :-
+    outsideQuotes(T, R).
+
