@@ -156,3 +156,34 @@ t(Rows) :-
     maplist(labeling([ff]), Rows),
     maplist(writeln, Rows).
 
+grid(N, Rows) :-
+    length(Rows, N),
+    maplist(length_n(N), Rows).
+
+length_n(N, L) :-
+    length(L, N).
+
+xtranspose([], []).
+xtranspose([[]|_], []).
+xtranspose(Rows, [Col|Cols]) :-
+    first_column(Rows, Col, RestRows),
+    xtranspose(RestRows, Cols).
+
+first_column([], [], []).
+first_column([[X|Xs]|Rows], [X|Col], [Xs|RestRows]) :-
+    first_column(Rows, Col, RestRows).
+
+xall-distinct([]).
+xall-distinct([Row|Rows]) :-
+    all_diff(Row),
+    xall-distinct(Rows).
+
+all_diff([]).
+all_diff([X|Xs]) :-
+    different(X, Xs),
+    all_diff(Xs).
+
+different(_, []).
+different(X, [Y|Ys]) :-
+    X #\= Y,
+    different(X, Ys).
