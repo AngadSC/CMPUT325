@@ -122,11 +122,11 @@ sudoku(Rows) :-
     append(Rows, Vs),
         % Vs is a list of all 9*9 variables in Rows
     Vs ins 1..9,
-    xall-distinct(Rows),
+    xall_distinct(Rows),
         % Variables of each row get distinct values
     xtranspose(Rows, Columns),
         % get the columns of 9x9 grid
-    xall-distinct(Columns),
+    xall_distinct(Columns),
     Rows = [As,Bs,Cs,Ds,Es,Fs,Gs,Hs,Is],
         % need references to rows
     blocks(As, Bs, Cs),
@@ -136,7 +136,7 @@ sudoku(Rows) :-
 
 blocks([], [], []).
 blocks([N1,N2,N3|Ns1], [N4,N5,N6|Ns2], [N7,N8,N9|Ns3]) :-
-    all_distinct([N1,N2,N3,N4,N5,N6,N7,N8,N9]),
+    all_diff([N1,N2,N3,N4,N5,N6,N7,N8,N9]),
     blocks(Ns1, Ns2, Ns3).
 
 problem(P) :-
@@ -173,10 +173,10 @@ first_column([], [], []).
 first_column([[X|Xs]|Rows], [X|Col], [Xs|RestRows]) :-
     first_column(Rows, Col, RestRows).
 
-xall-distinct([]).
-xall-distinct([Row|Rows]) :-
+xall_distinct([]).
+xall_distinct([Row|Rows]) :-
     all_diff(Row),
-    xall-distinct(Rows).
+    xall_distinct(Rows).
 
 all_diff([]).
 all_diff([X|Xs]) :-
@@ -187,3 +187,122 @@ different(_, []).
 different(X, [Y|Ys]) :-
     X #\= Y,
     different(X, Ys).
+
+
+
+% Question 4
+
+% A skeleton program for the review assignment problem of 
+% Assignment 4. 
+
+
+% The instance file in the Assignment is loaded to run tests
+
+:- [review_instance].
+
+assign(W1,W2) :-
+    sol(W1,W2).
+
+
+sol(Names1,Names2) :-
+    findall(Co1,paper(_,Co1,_,_),L1),
+    findall(Co2,paper(_,_,Co2,_),L2),
+    findall(Na,reviewer(Na,_,_),Reviewers),
+    append(L1,L2,LL),
+    append(Reviewers,LL,P),       % Reviewers first
+    list_to_set(P,People),
+    assoc(1,People,AssoLst),
+       % Reviewers are numbered 1 and up 
+       % followed by non-reviewer authors
+    findall([ID,Co1,Co2,Sub],paper(ID,Co1,Co2,Sub),Papers),
+         % papers are numbered 1 and up (ID = position in Papers)
+    length(Papers,N),
+    length(W1,N), % create domain variables given N
+    length(W2,N),
+
+    length(Reviewers,M),
+    W1 ins 1..M,
+    W2 ins 1..M,
+    distinct(W1,W2),
+          % no paper is assigned to the same reviewer twice
+    append(W1,W2,W),
+    workLoadAtMost(K),
+  
+     % below are the constraints you need to define
+    reviewLoad(W,K),
+          % no reviewer (a number) occurs in W more than K times
+    noSelfReview(1,W1,Papers,AssoLst),
+          % checking each assigned paper, starting from the 1st
+    noSelfReview(1,W2,Papers,AssoLst),
+    expertize(1,W1,Reviewers,Papers),
+    expertize(1,W2,Reviewers,Papers),
+    labeling([ffc],W),
+    num_to_name(W1,Reviewers,Names1), 
+          % Convert numbers back to names
+    num_to_name(W2,Reviewers,Names2).
+
+
+assoc(_,[],[]).
+assoc(N,[A|Q],[[N,A]|R]) :- N1 is N+1, assoc(N1,Q,R).
+
+% no paper is assigned to the same reviewer twice
+distinct([],[]).
+distinct([A|L1],[B|L2]) :-
+    A #\= B, distinct(L1,L2).
+
+num_to_name([],_,[]).
+num_to_name([I|Is],R,[Name|Names]) :-
+     nth1(I,R,Name), num_to_name(Is,R,Names).
+
+
+reviewLoad(W,K) :-
+    findall(Na, reviewer(Na,_,_), Reviewers),
+    length(Reviewers,M),
+    make_gc_pairs(1,M,K,Pairs),
+    global_cardinality(W,Pairs).
+
+make_gc_pairs(I,M,_,[]) :-
+    I > M.
+
+make_gc_pairs(I,M,K,[I-C|Rest]) :-
+    I =< M,
+    C in 0..K,
+    I1 is I+1,
+    make_gc_pairs(I1,M,K,Rest).
+
+ % if no one reierws thier own paper 
+ 
+ noSelfReview(_,[],_,_).
+
+ noSelfReview(I,[R|Rs],Papers,AssoLst) :-
+    nth1(I,Papers,[_,Co1,Co2,_]),
+    person_num(Co1,AssoLst,N1),
+    R #\= N1,
+    person_num(Co2,AssoLst,N2),
+    R #\= N2,
+    I1 is I+1,
+    noSelfReview(I1,Rs,Papers,AssoLst).
+
+person_num(Person,[[N,Person]|_],N).
+person_num(Person,[_|Rest],N) :-
+    person_num(Person,Rest,N).
+
+% exprtise match 
+
+expertize(_,[],_,_).
+expertize(I,[R|Rs],Reviewers,Papers) :-
+    nth1(I,Papers,[_,_,_,Sub]),
+    eligible_reviewers(Reviewers,Sub,1,Allowed),
+    list_to_fdset(Allowed,Set),
+    R in_set Set,
+    I1 is I+1,
+    expertize(I1,Rs,Reviewers,Papers).
+
+
+eligible_reviewers([],_,_,[]).
+eligible_reviewers([Name|Rest],Sub,Idx,[Idx|Allowed]) :-
+    reviewer(Name,S1,S2),
+    (Sub = S1 ; Sub = S2),
+    Idx1 is Idx+1,
+    eligible_reviewers(Rest,Sub,Idx1,Allowed).
+    
