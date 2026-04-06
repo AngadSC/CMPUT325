@@ -311,7 +311,7 @@ eligible_reviewers([Name|Rest],Sub,Idx,Allowed) :-
     Sub \= S1,
     Sub \= S2,
     Idx1 is Idx + 1,
-    eligilble_reviewers(Rest,Sub,Idx1,Allowed).
+    eligible_reviewers(Rest,Sub,Idx1,Allowed).
 
     
     
