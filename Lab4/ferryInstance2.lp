@@ -1,12 +1,14 @@
-#const steps=15.
+#const steps=19.
 
-car(car1;car2;car3;car4).
-locations(a;b).
+car(car1;car2;car3;car4;car5).
 
-at(car1,a,0)
+location(a;b).
+
+at(car1,a,0).
 at(car2,a,0).
 at(car3,a,0).
 at(car4,a,0).
+at(car5,a,0).
 
 at(ferry,a,0).
 
@@ -14,5 +16,5 @@ goal(T):-
   at(car1,b,T),
   at(car2,b,T),
   at(car3,b,T),
-  at(car4,b,T).
-  
+  at(car4,b,T),
+  at(car5,b,T).
