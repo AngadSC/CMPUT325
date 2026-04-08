@@ -32,7 +32,7 @@ time(0..steps).
         not goal(T).
 
 
-% Define unboard(Car,Loc,T)
+{unboard(Car,Loc,T)} :-
     car(Car),
     location(Loc), time(T),
     in(ferry,Car, T),
@@ -41,14 +41,13 @@ time(0..steps).
     not goal(T).
      
 {move(ferry,From,To,T)} :-
-%       car(Car),location(From), time(T),
-        location(To),
+        location(From), location(To), time(T),,
         at(ferry,From,T),
         From != To,
         not goal(T).
 
 moving(ferry,From,T):-     % irrelevant of where ferry moves to
-%      location(From),location(Loc), time(T),
+       location(From),location(Loc), time(T),
        at(ferry,From,T),
        move(ferry,From,Loc,T).
 
