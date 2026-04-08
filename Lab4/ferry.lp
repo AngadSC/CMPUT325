@@ -21,6 +21,11 @@ time(0..steps).
 % You may discover this during debugging using the "#show" derivative. 
 
 
+%Experiments were conducted on a Windows machine with an AMD Ryzen 5 7600X 6-Core
+%Processor, maximum clock speed 4.701 GHz, and 32 GB RAM. All tested ferry instances
+%were solved within 2 minutes using clingo 5.8.0.
+
+
 % actions
 {board(Car,Loc,T)} :-
         car(Car),
