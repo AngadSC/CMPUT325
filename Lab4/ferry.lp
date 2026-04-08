@@ -41,7 +41,7 @@ time(0..steps).
     not goal(T).
      
 {move(ferry,From,To,T)} :-
-        location(From), location(To), time(T),,
+        location(From), location(To), time(T),
         at(ferry,From,T),
         From != To,
         not goal(T).
